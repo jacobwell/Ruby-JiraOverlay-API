@@ -1,0 +1,87 @@
+maproad
+	1.basic read write capabilities via "dumb" hashes of fields
+
+forkedroad
+	1.use field object which begins add the attributes for reading and writing to be smarter 
+	2. able to dynamically detect custom fields
+	3. uses get fields for edit to make a separate list of just editable fields (seems to ignore editable fields if not set?)
+
+crossroad
+	1. removal of all hashes in favor of custom objects
+	2. update issue automatically tries to format new value properly (array or not array)
+	3. method_missing now plays well with update_issue
+	4. editableFieldFinder merged into makeFieldTables since was looping through same content but doing different things, so now unified the two together
+	5. makeField simplified to remove redundant code
+	6. issueFieldMaker heavily simplified and slimmed down and without hashes meant it had only one variable stored for it's instance so it was merged back into mega.rb
+	!7! the jira fetch issues from soap only returns the set info for field and not the fields that are not set
+	8. translations has become its own class due to eval binding scope issues
+	9. turned out to be other issue but change kept since a class is much more versatile and clearly defined than just using a file full of global variables
+	10. No longer stores the original Jira4r issue in the JiraIssue object
+	11. complex fields now implemented for almost all possible cases
+	12. dynamically getting component list, however need to implement a better system than a global variable may implement custom object
+	13. component will be generated via issue field maker else if statement which will then build object like issue field but even more intricate, which means adding another parameters to issues and the update statements which discriminates between the regular issue field and custom issue field
+
+
+doubleroad
+	1. issue field now entirely passed to translator for modifications for specific fixes
+	2. issue field massive redux new fields new value reading new return act
+	3. issue field pp simplified.
+	4. editable_fields no longer used since was mostly redundant the unique values are now in @more_fields
+	5. made a method to remove obscure more_field cases as well as not implemented items
+	6. updater has become its own class and file
+	7. translations for complex key is now implemented differently via setup_* functions in the translation file
+	8. is no longer implemented got combined into makefieldtables 
+	9. translations dependencies removed from main file (mega)
+	10. removed cannot_edit fields from translate and added to main file
+	11. cross item dependency for translator isolated down to main class requiring it
+	12. translations now gets version and makes a a keys table out of them
+	13. updater now has a catchall for any version field trying to be updated.
+	14. Versions fully editable and readable
+	NOW MOST FIELDS WORK besides:
+		attachment
+		components can only set to 1 value and not multiple
+		participants(not editable Jira lies and says it is)
+		obscure custom fields cannot be read since getcustomfields requires admin
+
+pavedroad
+	1. switched eval to be handled by a catchall insert_x function in translations, should solve issue of eval not allowing arrays or objects to be passed to the corresponding insert_ functions
+	2. can now submit multiple components 
+	3. jirafetch.get_issues now returns an array instead of an enumberable
+	4. comments method added to mega to fetch all comments for the issue
+	5. mega finally renamed to jiraissue
+	6. jirafetch has now become to top level file
+	7. jirafetch now automatically converts all issues from get_issues into JiraIssues
+	8. components, comments,versions all fetched via jirafetch, to remove redundant dependecies
+	9. getfieldsforedit also moved to jirafetch
+	10. re 8 cannot remove jirafetch dependencies from update without massive code refactoring (although perhaps that is in order anyways)
+	11. added an extra check to try to double check whether or not the field for updating is complex or not. is handled by passing the smart issue's issue_fields to the updater on initialization
+	12. translations for insert_x was not catching all *version fields since the "v" was lower case in some cases and upper case in other cases, now just looks for "ersion"
+	13. made snippets field for demo
+
+windy road (rails version) 
+	1. LOTS OF TWEAKS
+	2. made so it can handle between to different page loads, and that the update_issue is passed useful information which require conversion from strings values
+	3. parses string for line breaks and turns them into arrays so can from text in a form, update a field value that contains an array 
+
+backroad
+	1. Lots of code clean up optimization and commenting
+
+
+!!!!Details missing from home MBA computer!!!!
+
+JiraOverlay 
+	X. switched from object.class.to_s.include?(CLASS) to object.is_a?(CLASS) in updater.rb
+
+
+JiraOverlay 8/25 (limited tracking since lots of small changes being tracked on github)
+	1. JiraFetcher merged into main module
+	2. updater redux, lots of functionality being streamlined
+	3. module get_issue(singular issue by id) method added
+	4. found out SOAP/Jira4R are smarter than they appear and automatically handle arrays vs single objects
+	5. based on info streamlining update as well as JiraOverlay
+	6. updater also renamed to jiraupdater to describe its purpose more accurately as well as for overall naming style consitiency
+	7. old version (updater.rb) being kept short term until confident in changes
+	8. updater simplfied and partially handled via JiraOverlay
+
+
+316 lines of code = 5 weeks
